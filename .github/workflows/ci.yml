@@ -20,14 +20,14 @@ jobs:
       uses: actions/setup-java@v4
       with: 
         java-version: '17'
-        distribution: 'termurin'
+        distribution: 'temurin'
         cache: 'maven'
 
-    - name: Give exceute permissions to mvnw
+    - name: Give execute permissions to mvnw
       run: chmod +x mvnw
 
-    - name: Build with Maven
+    - name: Build Project
       run: ./mvnw clean install 
 
-    - name: Run tests
+    - name: Run Tests
       run: ./mvnw test
