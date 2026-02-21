@@ -13,21 +13,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - run: mvn clean compile
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with: 
-        java-version: '17'
-        distribution: 'temurin'
-        cache: 'maven'
+  test:
+    runs-on: ubuntu-latest
+    needs: build
 
-    - name: Give execute permissions to mvnw
-      run: chmod +x mvnw
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - run: mvn test
 
-    - name: Build Project
-      run: ./mvnw clean install 
+  package:
+    runs-on: ubuntu-latest
+    needs: test
 
-    - name: Run Tests
-      run: ./mvnw test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - run: mvn package
